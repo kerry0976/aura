@@ -1,0 +1,8 @@
+{
+    "python.pythonPath": "/anaconda3/bin/python",
+    "C_Cpp.dimInactiveRegions": true,
+    "files.associations": {
+        "cmath": "cpp",
+        "complex": "cpp"
+    }
+}
