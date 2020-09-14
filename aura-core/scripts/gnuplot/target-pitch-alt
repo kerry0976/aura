@@ -1,0 +1,6 @@
+# plot target pitch angle versus actual pitch angle
+
+set datafile separator ","
+
+plot "ap-0.csv" using 1:7 with lines title "Target Pitch (deg)", \
+     "filter-0.csv" using 1:9 with lines title "Actual Pitch (deg)"

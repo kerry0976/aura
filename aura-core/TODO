@@ -1,0 +1,211 @@
+ugear TODO
+==============
+
+- Compute airdata climb rate at sensor level (or pass it along if the sensor
+  already computes this.)
+
+- Add support for a local ground cache for basic ground (obstacle?) avoidance.
+
+- Add alias code to allow plugging/binding any set of sensors into any 
+  filter algorithm.
+
+- Add servo sensor module
+
+- Make "heart beat" rate xml configurable.
+
+- Implement some dead reckoning system that tries to track location
+  based on magnetic heading, airspeed, and wind speed estimate, and
+  time elapsed.  Snap to gps location when ever we have fresh gps
+  data.  Use as a possible fall back for a situation where we lose
+  gps, our nav estimate has likely diverged, and we are starting to
+  get desperate.
+
+- Resolve #include "dir/file.h" vs. <dir/file.h> vs. "file.h"
+
+- Add support for a "notes" file that will contain time/date (?) in
+  the file name and be able to contain arbitrary time stamped messages
+  from the ground station.  This file will be saved onboard the UAS
+  along side all the other data.
+
+- have "home" location selection write an entry to debug.txt
+
+- Add update rate (ahrs/nav/etc.) values to the health structure so the
+  ground station can evaluate the performance of the onboard computer.
+
+- Safety measure ... fall back to gps position if "nav" position
+  diverges by more than some threshold.  (This could be a solution to
+  a problem caused by timing pauses caused by trying to do too much
+  data logging.)  It still may be a good idea as a safety.
+
+- ground station sends up true date so gumstix can set it's clock
+  properly (?) -- low priority.  Maybe we could send this as a message
+  in the early startup so it can get logged someplace if we are doing
+  onboard logging.  This will disappear as an issue anyway when we
+  migrate away from the MNAV.
+
+
+x Add support for a primary route and a standby route.  Support
+  external commands to clear the stby route, upload new waypoints, and
+  swap the standby and primary routes.
+
+x Add telnet server module so we can remotely interact with the property tree
+
+x 05/15/2009 wired the UMN ADNS algorithm output into the UGear structure.
+
+x 04/30/2009 remove dependency on using imupacket for globally sharing data and
+  move to the property tree.
+
+x 04/30/2009 translate "pressure" -> "air data" (file names, variable names,
+  comments, etc.)
+
+x 04/27/2009 - remove dependency on using navpacket for globally sharing
+  data and move to the property tree.
+
+x 04/26/2009 - remove dependency on using gpspacket for globally sharing
+  data and move to the property tree.
+
+x 04/26/2009 - remove gps count down from mnav nav.c ... now handled in gps_mgr
+
+x 04/26/2009 - move magvar computation to gps_mgr
+
+x 04/24/2009 - First working integration of the UMN ADNS algorithm.
+
+x 04/20/2009 - Replace adhoc PI R2D, and D2R type constants scattered
+  through the code.
+
+x 04/20/2009 - Add actuator module
+
+x 04/19/2009 - Add ability to read from file versus live sensors
+
+x 04/13/2009 - Test a setitimer() / sigaction() approach to structuring
+  the main loop timing.  Write a non-blocking MNAV data parser.  So far the
+  results are real good.
+
+x 01/17/2009 - Automatically compute the magnetic offset ... at least
+  make it configurable if not compute a close approximation.
+
+x 01/17/2009 - Make the local magnetic declination (variation)
+  configurable rather than hard coded.
+
+x 01/17/2009 - Work on clearer gps/nav data validation logic and flagging.
+
+x 01/17/2009 - Make "GoHome" on lost comm link timeout configurable
+
+x 01/16/2009 - Add gpsd support.  More can be done, but basic support
+  is there and working.
+
+x 11/11/2008 - compute a forward acceleration value based on pitot sensor
+  and expose that into the property system as /accelerations/airspeed-ktps
+
+x 10/20/2008 - first stab at adding up elevator in turns... proportional
+  to the roll angle "squared"
+
+x 10/18/2008 - Add a pitch rate damping mode using just a small amount
+  of elevator throw.
+
+x 10/18/2008 - lower throttle top end (on Malolo2)
+
+x 10/18/2008 - limit amount of throttle change per iteration.  128
+  steps per cycle on a 0-65535 range, where 16384 - 49152 is about the
+  effective full range.  Assumes the code runs at 25 cycles per
+  second.  This means it takes about 10 seconds to travel from idle to
+  full throttle.
+
+x 10/18/2008 - double check sensor calibration values of "Phil's" MNAV.
+  - nothing obvious, trying 2 things:
+    1. power from separate battery
+    2. run with 1m gps cable
+
+x 10/2/2008 - Build a throttle based altitude controller ... make lots
+  of fail safes and safety measures to prevent the throttle from being
+  activated inadvertently when it shouldn't come on.
+
+x 9/26/2008 - Send the "home" reference point along with waypoints!
+
+x 9/25/2008 - Actual route is communicated, one waypoint per health
+  record back to the ground station.  The waypoints are sent in a
+  round robin fashion so the ground station can automatically match
+  the UAS's actual route, even if it is updated dynamically in flight.
+
+x 9/25/2008 - Add functionality to update the target_lon & lat of
+  relative/offset waypoints.
+
+x 9/25/2008 - Home is the "reference" point.  If home is updated, any
+  offset/relative waypoints are recomputed relative to the new home
+  location and reference heading.
+
+x 9/24/2008 - Add initial support for relative/offset waypoints who's
+  positions can be recomputed relative to some new reference point and
+  reference heading.
+
+x 9/24/2008 - When updating the home location, also specify a
+  direction of travel.
+
+x Add an altitude estimator based on the pressure sensor, but
+  corrected over time by an average of the (gps - pressure) error.
+
+April 4, 2008 (Friday)
+x (Curt) When UAV loses heartbeat, head home until commanded to resume route.
+x (Curt) Add telnet command reader to UGsmooth
+x (Curt) add wp command parser to ugear so we can update wayponts on the fly
+
+April 3, 2008 (Thursday)
+x (Curt) remove test commands from UGsmooth.
+x (Curt) Add autopilot targets to telemetry data being sent to ground
+
+April 2, 2008 (Wednesday)
+x (Curt) Add command parser on board ugear
+x (Curt) how does target altitude property get set?  Must be specified in
+  route? 
+
+April 1, 2008 (Tuesday)
+x (Curt) Update version of ugear on Malolo2 pack (Note: rz --ymodem !)
+x (Curt) Add feature to route manager to follow route or go home.
+
+x (Curt) gpsd working and validated with Tim's handheld, ground station can
+  "know" where "home" is, even when "home" is moving.
+x (Curt) send current target waypoint index to ground station
+
+March 30, 2008 (Sunday)
+x (Curt) UAV sets default home location to where it sees its first "real" fix.
+
+March 29, 2008 (Saturday)
+x (Curt) Add uplink sequenced, verified, check summed commands to autopilot
+
+March 28, 2008 (Friday)
+x (Curt) duh: switch to ":" to seperate degrees and minutes
+x (Curt) Update heading calc code in ugear as per Jung's fix.
+x (Curt) Test ugear heading fix
+x (Curt) Update UGsmooth to display decimal minute coordinates correctly
+
+March 27, 2008 (Thursday)
+x (Curt) Update routegen so we can accept/use decimal minute coordinates.
+x (Curt) Fix route generator to stay within flight distance limit
+  including distance from launch point to first point in the route and
+  distance from the last route point to home.
+x (Curt) but instead of limiting the route by distance, limit it by
+  flight time factoring in speed, course, wind speed, wind direction.
+  (AKA - Route generator should factor in wind vector and plan the
+  flight based on time aloft, not distance
+x (Curt) UGsmooth computes gps health and sends over to UAV_NAV/PFD
+x (Curt) Have ugsmooth send lfstech structure directly, not through FG
+
+x Add return / command direction across serial connection.
+
+x add config file
+
+x Autopilot!
+
+x 2/14/2007: Better libstdc++ solution on stargate (hate to static link) :-(
+  - copy libstdc++.so.5.0.5 and libgcc_s.so.1 from build tree
+  - then we can dynamically link the ugear executable so it is a small upload
+    and it will run on the host.
+  - Not sure what else might break when libgcc_s.so.1 is replaced with a
+    newer version, so heads up and eyes open ...
+
+x 2/13/2007: Port property system to the arm (?piggy?)
+
+x 2/13/2007: Port xml reader to the arm (?piggy?)
+
+x 2/12/2007: Make MNAV serial device selectable from the command line
+

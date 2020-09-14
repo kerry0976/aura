@@ -1,0 +1,7 @@
+# plot gyros
+
+set datafile separator ","
+
+plot "imu-0.csv" using 1:($2*57.2957795) with lines title "p (deg/sec)", \
+     "imu-0.csv" using 1:($3*57.2957795) with lines title "q (deg/sec)", \
+     "imu-0.csv" using 1:($4*57.2957795) with lines title "r (deg/sec)"
