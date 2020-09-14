@@ -4,11 +4,21 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
+        {
+            "name": "(lldb) Attach",
+            "type": "cppdbg",
+            "request": "attach",
+            "program": "${workspaceFolder}/aura-navigation/src/UASLab_RAPTRS/uNavINS.cpp",
+            "processId": "${command:pickProcess}",
+            "MIMode": "lldb"
+        },
         {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/aura-navigation/scripts/run_filter2.py",
+            "args": ["${workspaceFolder}/aura-navigation/flight_data/test5.mat"],
             "console": "integratedTerminal"
         }
     ]
